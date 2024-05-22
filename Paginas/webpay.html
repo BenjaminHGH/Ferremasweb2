@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webpay Integration</title>
+  <link rel="stylesheet" href="../css/webpay.css">
+  <link rel="icon" href="../img/icono.jpg" type="image/x-icon"> 
+</head>
+<body>
+  <h1>Iniciar Pago con Webpay</h1>
+  <form id="paymentForm">
+    <input type="text" id="buyOrder" placeholder="Buy Order" required>
+    <input type="text" id="sessionId" placeholder="Session ID" required>
+    <input type="number" id="amount" placeholder="Amount" required>
+    <input type="text" id="returnUrl" placeholder="Return URL" required>
+    <button type="submit">Pagar</button>
+  </form>
+
+  <script>
+    const apiBaseUrl = 'http://localhost:5000/api/webpay';
+
+    document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const buyOrder = document.getElementById('buyOrder').value;
+      const sessionId = document.getElementById('sessionId').value;
+      const amount = document.getElementById('amount').value;
+      const returnUrl = document.getElementById('returnUrl').value;
+
+      const res = await fetch(`${apiBaseUrl}/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ buyOrder, sessionId, amount, returnUrl })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        // Redireccionar al URL de Webpay
+        window.location.href = data.url + '?token_ws=' + data.token;
+      } else {
+        alert(data.message);
+      }
+    });
+  </script>
+</body>
+</html>
