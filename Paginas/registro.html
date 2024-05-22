@@ -39,7 +39,6 @@
       if (res.ok) {
         localStorage.setItem('token', data.token);
         alert('Login successful');
-        window.location.href = 'home.hmtl';
       } else {
         alert(data.msg);
       }
@@ -62,7 +61,6 @@
       const data = await res.json();
       if (res.ok) {
         alert('Registration successful');
-        window.location.href = 'iniciosesion.html';
       } else {
         alert(data.msg);
       }
