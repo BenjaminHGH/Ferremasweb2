@@ -17,8 +17,9 @@
     <button type="submit">Register</button>
   </form>
 </body>
-<script>const apiBaseUrl = 'http://localhost:5000/api/users';
- 
+<script>
+const apiBaseUrl = 'http://localhost:5000/api/users';
+const redirectUrl = 'http://localhost:5000/login.html';
   // Register form handler
   document.getElementById('registerForm').addEventListener('submit', async (e) => {
      e.preventDefault();
@@ -26,16 +27,19 @@
      const password = document.getElementById('regPassword').value;
  
      const res = await fetch(`${apiBaseUrl}/register`, {
+      
        method: 'POST',
        headers: {
          'Content-Type': 'application/json'
        },
        body: JSON.stringify({ username, password })
+       
      });
  
      const data = await res.json();
      if (res.ok) {
        alert('Registration successful');
+       window.location.href = redirectUrl;
      } else {
        alert(data.msg);
      }
